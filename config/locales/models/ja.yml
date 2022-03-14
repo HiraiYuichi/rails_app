@@ -9,8 +9,7 @@ ja:
         name: 名前
         email: メールアドレス
         password: パスワード
-        <span class="point">password_confirmation: パスワード（確認用）</span>
-    
+        password_confirmation: パスワード（確認用）
       will_paginate:
     #ラベル名で指定
     previous_label: ←前
