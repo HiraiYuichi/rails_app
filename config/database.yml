@@ -11,7 +11,8 @@ default: &default
 
 development:
   <<: *default
-  database: db/development.sqlite3
+  database:  postgres://bogvxipftuhvwe:3912e451bda11f0749849bb3839defe0fd2fabee31bba0ec9c246b6141b10ff1@ec2-35-153-35-94.compute-
+  #db/development.sqlite3
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -25,3 +26,7 @@ production:
   adapter: postgresql
   encoding: unicode
   pool: 5
+  
+  
+  
+  
