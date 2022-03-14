@@ -6,6 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 #gem 'will_paginate', '3.1.7' # will_paginateのバージョンをあげた
 #gem 'bootstrap-will_paginate', '1.0.0'
+gem 'faker'
 gem "rails", "~> 7.0.1"
 gem 'bcrypt',         '3.1.12'
 gem 'bootstrap-sass', '3.3.7'
