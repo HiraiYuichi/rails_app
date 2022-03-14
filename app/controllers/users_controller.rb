@@ -5,11 +5,11 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
   end
-  def destroy
-    User.find(params[:id]).destroy
-    flash[:success] = "User deleted"
-    redirect_to users_url
-  end
+# def destroy
+ #   User.find(params[:id]).destroy
+   # flash[:success] = "User deleted"
+  #  redirect_to users_url
+  #nd
   def index
     #@users =  User.all
     @users = User.page(params[:page]).per(10)
