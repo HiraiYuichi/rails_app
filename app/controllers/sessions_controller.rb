@@ -15,9 +15,7 @@ class SessionsController < ApplicationController
        params[:session][:remember_me] == '1' ? remember(user) : forget(user)
        #Sessionsヘルパーのrememberメソッド
        #user_url(user)　という名前付きルートになる
-       remember user
-      #詳細画面にリダイレクト
-      redirect_to user
+       redirect_back_or user
     else
       flash.now[:danger] = 'メールとパスワードの組み合わせが無効です'
       render 'new'
