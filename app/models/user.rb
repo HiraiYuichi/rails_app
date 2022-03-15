@@ -1,6 +1,35 @@
 class User < ApplicationRecord
-#:remember_token属性を定義
-  attr_accessor :remember_token
+
+ # アカウントを有効にする
+ def activate
+  update_attribute(:activated,    true)
+  update_attribute(:activated_at, Time.zone.now)
+   #指定のカラムを指定の値に、DBに直接上書き保存
+  update_columns(activated: true, activated_at: Time.zone.now)
+end
+
+# 有効化用のメールを送信する
+def send_activation_email
+  UserMailer.account_activation(self).deliver_now
+end
+
+
+
+  # トークンがダイジェストと一致したらtrueを返す
+  def authenticated?(attribute, token)
+    digest = send("#{attribute}_digest")
+    return false if digest.nil?
+    BCrypt::Password.new(digest).is_password?(token)
+  end
+
+
+
+#仮想の属性:remember_token、activation_tokenをUserクラスに定義
+attr_accessor :remember_token, :activation_token
+#保存の直前に参照するメソッド
+before_save   :downcase_email
+# データ作成の直前に参照するメソッド
+before_create :create_activation_digest
 
 
      #saveの直前に　現在のユーザーのemailに　emailを小文字にしたものを代入
@@ -42,6 +71,20 @@ class User < ApplicationRecord
     # ユーザーのログイン情報を破棄する
     def forget
       update_attribute(:remember_digest, nil)
+    end
+
+
+    private
+
+     # メールアドレスをすべて小文字にする
+     def downcase_email
+      self.email = email.downcase
+    end
+ 
+    # 有効化トークンとダイジェストを作成および代入する
+    def create_activation_digest
+      self.activation_token  = User.new_token
+      self.activation_digest = User.digest(activation_token)
     end
 
   end

@@ -3,7 +3,11 @@ class UsersController < ApplicationController
   before_action :correct_user,   only: [:edit, :update]
   before_action :admin_user,     only: :destroy
   def show
-    @user = User.find(params[:id])
+      # @userにUserテーブルから(params[:id])のデータを取り出して代入
+      @user = User.find(params[:id])
+      #root_urlにリダイレクト　trueの場合ここで処理が終了する→　@userが有効ではない場合
+   　 #false(@userが有効）な場合はリダイレクトは実行されない
+      redirect_to root_url and return unless @user.activated?
   end
 # def destroy
  #   User.find(params[:id]).destroy
@@ -12,7 +16,7 @@ class UsersController < ApplicationController
   #end
   def index
     #@users =  User.all
-    @users = User.page(params[:page]).per(10)
+    @users = User.where(activated: true).page(params[:page]).per(10)
   end
   
   def new
@@ -21,12 +25,10 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-        #sessions　helperで定義したlog_inメソッド
-      log_in @user
-      flash[:success] = "サンプルアプリへようこそ！"
-        #ユーザーの詳細画面に自動で変換してくれる
-      redirect_to @user
-      # 保存の成功をここで扱う。
+        # Userモデルで定義したメソッド（send_activation_email）を呼び出して有効化メールを送信
+      @user.send_activation_email
+       flash[:info] = "メールを確認してアカウントを有効にしてください。"
+       redirect_to root_url
     else
       render 'new'
     end

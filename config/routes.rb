@@ -12,5 +12,5 @@ post '/signup'=> 'users#create'
  post   '/login'=> 'sessions#create'
  get    '/logout'=>'sessions#destroy'
  resources :users
-
+ resources :account_activations, only: [:edit]
 end
