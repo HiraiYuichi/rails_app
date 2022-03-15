@@ -3,11 +3,7 @@ class UsersController < ApplicationController
   before_action :correct_user,   only: [:edit, :update]
   before_action :admin_user,     only: :destroy
   def show
-      # @userにUserテーブルから(params[:id])のデータを取り出して代入
-      @user = User.find(params[:id])
-      #root_urlにリダイレクト　trueの場合ここで処理が終了する→　@userが有効ではない場合
-   　 #false(@userが有効）な場合はリダイレクトは実行されない
-      redirect_to root_url and return unless @user.activated?
+    @user = User.find(params[:id])
   end
 # def destroy
  #   User.find(params[:id]).destroy
@@ -16,7 +12,7 @@ class UsersController < ApplicationController
   #end
   def index
     #@users =  User.all
-    @users = User.where(activated: true).page(params[:page]).per(10)
+    @users = User.page(params[:page]).per(10)
   end
   
   def new
